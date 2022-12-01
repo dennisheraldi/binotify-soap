@@ -32,7 +32,7 @@ public class SubscriptionService {
                 s.subscriber_id = subscriber_id;
                 s.save();
                 // Notify admin
-                Request.GET(ServiceType.REST, "/admins", (String adminJson) -> {
+                Request.GET(ServiceType.REST, "/users/admins", (String adminJson) -> {
                     Mailer.notifyAdminNewSub(
                         "There is a new subscription request from subscriber id " + subscriber_id +
                         " for creator id " + creator_id,
@@ -72,7 +72,7 @@ public class SubscriptionService {
     public List<Subscription> ListSubs() throws SQLException {
         Logger.log(context, "[REST] Get all subscription list for Admin", "/binotify/Subscription{ListSubs}");
         if (Authentication.IsAuthenticated(context, ServiceType.REST)) {
-            List<Subscription> s = Subscription.find(1, -1, -1);
+            List<Subscription> s = Subscription.find(-1, -1, -1);
             return s;
         }
         throw new SQLException("Not authenticated");

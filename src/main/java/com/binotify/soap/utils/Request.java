@@ -50,8 +50,7 @@ public class Request {
             HttpRequest request = requestBuilder.build();
             client.sendAsync(request, BodyHandlers.ofString())
                 .thenApply(HttpResponse::body)
-                .thenAccept(respCallback)
-                .join();
+                .thenAccept(respCallback);
         } catch (URISyntaxException ex) {
             ex.printStackTrace();
         }
