@@ -2,7 +2,6 @@ version: '3.9'
 services:
     soap:
         build: .
-        container_name: ${APP_NAME:-binotify_soap}
         env_file:
             - .env
             - ../.env

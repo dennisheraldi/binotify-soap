@@ -7,7 +7,7 @@ COPY src ./src
 RUN --mount=type=cache,target=/root/.m2 mvn -f pom.xml clean package
 
 
-FROM eclipse-temurin:11-alpine
+FROM maven:3.8-eclipse-temurin-11-alpine
 
 WORKDIR /opt/app
 COPY --from=mvnbuild /opt/app/target/binotify-jar-with-dependencies.jar binotify.jar
