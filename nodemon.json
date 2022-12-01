@@ -1,0 +1,10 @@
+{
+    "verbose": true,
+    "exec": "docker compose up --build -d",
+    "ext": "java",
+    "watch": ["./src"],
+    "delay": 2000,
+    "events": {
+        "restart": "docker compose up --build -d"
+    }
+}
