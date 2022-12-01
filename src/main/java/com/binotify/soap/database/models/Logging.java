@@ -77,7 +77,7 @@ public class Logging extends Model {
             l.is_persisted = true;
             res.add(l);
         }
-        stmt.close();
+        stmt.getConnection().close();
         return res;
     }
 
@@ -112,7 +112,7 @@ public class Logging extends Model {
             }
             this.is_persisted = true;
         }
-        stmt.close();
+        stmt.getConnection().close();
     }
 
     public void delete() throws SQLException {

@@ -80,7 +80,7 @@ public class Subscription extends Model {
             l.is_persisted = true;
             res.add(l);
         }
-        stmt.close();
+        stmt.getConnection().close();
         return res;
     }
 
@@ -107,7 +107,7 @@ public class Subscription extends Model {
         this.old_creator_id = this.creator_id;
         this.old_subscriber_id = this.subscriber_id;
         this.is_persisted = true;
-        stmt.close();
+        stmt.getConnection().close();
     }
 
     public void delete() throws SQLException {

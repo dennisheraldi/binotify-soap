@@ -18,19 +18,23 @@ public final class Client {
     static Connection conn;
     static Client client;
 
-    public Client() {
-        if (client != null) return;
+    private static Connection getConnection() {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+            return DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
-    
+
     public static Client getInstance() {
         if (client == null) {
             client = new Client();
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
             System.out.println("initialize db");
         }
         return client;
@@ -38,18 +42,19 @@ public final class Client {
 
     public void runExecute(String sql) throws SQLException {
         try {
-            Statement stmt = conn.createStatement();
+            Statement stmt = getConnection().createStatement();
             stmt.execute(sql);
+            stmt.getConnection().close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public PreparedStatement prep(String sql) throws SQLException {
-        return conn.prepareStatement(sql);
+        return getConnection().prepareStatement(sql);
     }
 
     public PreparedStatement prep(String sql, boolean auto_increment) throws SQLException {
-        return conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        return getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
     }
 }
