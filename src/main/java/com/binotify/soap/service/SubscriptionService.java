@@ -2,6 +2,7 @@ package com.binotify.soap.service;
 
 import java.net.http.HttpRequest.BodyPublishers;
 import java.sql.SQLException;
+import java.util.List;
 
 import com.binotify.soap.database.models.Subscription;
 import com.binotify.soap.enums.ServiceType;
@@ -64,6 +65,24 @@ public class SubscriptionService {
                 return 1; // Success changing status
             }
             return 0; // Subscription not found
+        }
+        throw new SQLException("Not authenticated");
+    }
+
+    public List<Subscription> ListSubs() throws SQLException {
+        Logger.log(context, "[REST] Get all subscription list for Admin", "/binotify/Subscription{ListSubs}");
+        if (Authentication.IsAuthenticated(context, ServiceType.REST)) {
+            List<Subscription> s = Subscription.find(1, -1, -1);
+            return s;
+        }
+        throw new SQLException("Not authenticated");
+    }
+
+    public List<Subscription> GetSubsList(@WebParam(name="SubscriberId") int subscriber_id) throws SQLException {
+        Logger.log(context, "[REST] Get subscribed creators for subscriber id " + subscriber_id, "/binotify/Subscription{GetSubsList}");
+        if (Authentication.IsAuthenticated(context, ServiceType.REST)) {
+            List<Subscription> s = Subscription.find(-1, subscriber_id, -1);
+            return s;
         }
         throw new SQLException("Not authenticated");
     }
